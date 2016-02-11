@@ -1,13 +1,14 @@
 class Kibana < Formula
   desc "Analytics and search dashboard for Elasticsearch"
   homepage "https://www.elastic.co/products/kibana"
-  url "https://github.com/elastic/kibana.git", :tag => "v4.3.1", :revision => "d6e412dc2fa54666bf6ceb54a197508a4bc70baf"
+  url "https://github.com/elastic/kibana.git", :tag => "v4.4.0", :revision => "07cb4d6aecddbc9dea1a26f55778b32edcef49df"
   head "https://github.com/elastic/kibana.git"
+  revision 1
 
   bottle do
-    sha256 "982230d782a879a0d073aa28a514a8b1ca168e5814dce528b0de7f2df1de7d9b" => :el_capitan
-    sha256 "7ba6e3a76d4745cea036ec36185920648e52b3068585b7af688b7494fe394235" => :yosemite
-    sha256 "db2c5626df644ff1249e054b911f819487d80ecb9400970672f5887cca1a4a1a" => :mavericks
+    sha256 "f6fd5b4923cc1f8ca41ec27048c5ac4a13d379315a5920ee0e1a938d6489868d" => :el_capitan
+    sha256 "f83fdee5a0218092c9592ee1c47aae4588d9cd49ab49946323a15c542c5d2f38" => :yosemite
+    sha256 "234466f181d855643864d2bfd400226c4bde8c7a0976cabbfbfb878c9fe0115e" => :mavericks
   end
 
   resource "node" do
@@ -62,16 +63,16 @@ class Kibana < Formula
 
   def post_install
     ln_s etc/"kibana", prefix/"config"
-
-    (var/"lib/kibana/installedPlugins").mkpath
-    ln_s var/"lib/kibana/installedPlugins", prefix/"installedPlugins"
+    (prefix/"installedPlugins").mkdir
   end
 
   plist_options :manual => "kibana"
 
   def caveats; <<-EOS.undent
-    Plugins: #{var}/kibana/installedPlugins/
     Config: #{etc}/kibana/
+    If you wish to preserve your plugins upon upgrade, make a copy of
+    #{prefix}/installedPlugins before upgrading, and copy it into the
+    new keg location after upgrading.
     EOS
   end
 
